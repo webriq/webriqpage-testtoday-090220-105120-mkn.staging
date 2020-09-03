@@ -19,6 +19,23 @@ const Layout = ({ children }) => {
       }
     }
   `)
+  
+  // When embedded in an iFrame, sends a postMessage "WEBRIQ_SITE_HAS_LOADED" to parent
+  const [hasLoaded, setHasLoaded] = React.useState(false)
+  React.useEffect(() => {
+    const sendPostMessage = e => {
+      if (!hasLoaded) {
+        window.parent.postMessage("WEBRIQ_SITE_HAS_LOADED", "*")
+        setHasLoaded(true)
+      }
+    }
+
+    window.addEventListener("message", sendPostMessage, false)
+
+    return () => {
+      window.removeEventListener("message", sendPostMessage, false)
+    }
+  }, [hasLoaded])
 
   return (
     <>
