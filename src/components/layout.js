@@ -27,18 +27,12 @@ const Layout = ({ children }) => {
       if (!hasLoaded) {
         console.log("Sending postMessage: WEBRIQ_SITE_HAS_LOADED")
         window.parent.postMessage("WEBRIQ_SITE_HAS_LOADED", "*")
-        console.log("Sent postMessage: WEBRIQ_SITE_HAS_LOADED")
+        console.log("Successfully sent postMessage: WEBRIQ_SITE_HAS_LOADED")
         setHasLoaded(true)
       }
     }
 
-    console.log("Event listener postMessage: WEBRIQ_SITE_HAS_LOADED added!")
-    window.addEventListener("message", sendPostMessage, false)
-
-    return () => {
-      console.log("Event listener postMessage: WEBRIQ_SITE_HAS_LOADED removed!")
-      window.removeEventListener("message", sendPostMessage, false)
-    }
+    sendPostMessage()
   }, [hasLoaded])
 
   return (
